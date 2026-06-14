@@ -163,7 +163,13 @@ def generate_rag_response(
         "Always cite the page number(s) your answer is drawn from, like (Page 12). "
         "If the answer cannot be found in the context, say clearly: "
         "'This information is not available in the uploaded document.' "
-        "Do not guess or add information from outside the context."
+        "Do not guess or add information from outside the context. "
+        "Format rules — you MUST follow these: "
+        "Do NOT use markdown headers (# ## ###). "
+        "Do NOT bold entire sentences or paragraphs with **. "
+        "Do NOT use large formatting. "
+        "Write in plain, readable prose. "
+        "When quoting from the document, use quotation marks and a normal font — never bold the entire quote."
     )
 
     user_message = (

@@ -1,13 +1,12 @@
 import streamlit as st
 import os
 import tempfile
-import uuid
 
 from groq import Groq
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import PyMuPDFLoader
 from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_community.vectorstores import Chroma
+from langchain_community.vectorstores import FAISS
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Page configuration
@@ -118,16 +117,14 @@ def process_document(uploaded_file) -> list:
     return chunks
 
 
-def build_vectorstore(chunks: list, embedding_model) -> Chroma:
+def build_vectorstore(chunks: list, embedding_model) -> FAISS:
     """
-    Embed all chunks and store them in an in-memory ChromaDB collection.
-    A unique collection name is used so re-indexing always starts fresh.
+    Embed all chunks and store them in an in-memory FAISS index.
+    FAISS is lightweight and has no external service dependencies.
     """
-    collection_name = f"rag_{uuid.uuid4().hex[:8]}"
-    vectorstore = Chroma.from_documents(
+    vectorstore = FAISS.from_documents(
         documents=chunks,
         embedding=embedding_model,
-        collection_name=collection_name,
     )
     return vectorstore
 
